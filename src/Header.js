@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import HeaderOptions from './HeaderOptions';
-import WorkIcon from '@mui/icons-material/Work';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
@@ -20,9 +20,10 @@ const Header = () => {
         <div className="header_right">
             <HeaderOptions title="Home" Icon={HomeIcon}/>
             <HeaderOptions title="My Network" Icon={SupervisorAccountIcon}/>
-            <HeaderOptions title="Jobs" Icon={WorkIcon} />
+            <HeaderOptions title="Jobs" Icon={BusinessCenterIcon} />
             <HeaderOptions title="Messaging" Icon={MessageIcon} />
             <HeaderOptions title="Notifications" Icon={NotificationsIcon} />
+            <HeaderOptions title="Me" avatar="https://media-exp1.licdn.com/dms/image/C4D03AQG8Z5Z2Z7ZQ0A/profile-displayphoto-shrink_200_200/0/1627421000000?e=163961280" />
         </div>
     </div>
   )

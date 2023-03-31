@@ -6,3 +6,19 @@
     color: grey;
     cursor: pointer;
 }
+
+.headerOptions:hover {
+    color: black;
+
+}
+
+.headerOptions_icon {
+    object-fit: contain;
+    height: 30px !important;
+    width: 30px !important;
+}
+
+.headerOptions_title {
+    font-size: 12px;
+    font-weight: 400;
+}

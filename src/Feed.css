@@ -11,6 +11,16 @@
     margin-bottom: 20px;
 }
 
+.feed_box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.feed_avatar {
+    margin-right: 10px;
+}
+
 .feed_input {
     border: 1px solid lightgrey;
     border-radius: 30px;
@@ -18,6 +28,7 @@
     padding: 10px;
     color: grey;
     padding-left: 15px;
+    width: 100%;
 }
 
 .feed_input > form {

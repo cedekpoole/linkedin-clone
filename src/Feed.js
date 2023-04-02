@@ -7,6 +7,10 @@ function Feed() {
         <div className="feed_inputContainer">
             <div className="feed_input">
                 <CreateIcon />
+                <form>
+                    <input type="text" />
+                    <button type="submit">Send</button>
+                </form>
             </div>
         </div>
     </div>

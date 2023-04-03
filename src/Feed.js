@@ -10,36 +10,38 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 
 import { db } from "./firebase";
-import { collection, getDocs, addDoc, serverTimestamp } from "firebase/firestore/lite";
+import { collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
 
 function Feed() {
   const [posts, setPosts] = useState([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    async function getPosts() {
+    const getPosts = async () => {
       const postsCol = collection(db, "posts");
-      const postsSnapshot = await getDocs(postsCol);
-      const postsList = postsSnapshot.docs.map((doc) => ({
-        data: doc.data(),
-        id: doc.id,
-      }));
-      setPosts(postsList);
-      
-    }
+      const q = query(postsCol, orderBy("timestamp", "desc"));
+      const postsSnapshot = await getDocs(q);
+      setPosts(
+        postsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    };
     getPosts();
-  }, [posts]);
+  }, []);
 
   const sendPost = (e) => {
     e.preventDefault();
     const addPost = async () => {
-        await addDoc(collection(db, "posts"), {
-      name: "Cameron Poole",
-      description: "This is a test",
-      message: input,
-      photoUrl: "",
-      timestamp: serverTimestamp(),
-    })};
+      await addDoc(collection(db, "posts"), {
+        name: "Cameron Poole",
+        description: "This is a test",
+        message: input,
+        photoUrl: "",
+        timestamp: serverTimestamp(),
+      });
+    };
     addPost();
     setInput("");
   };

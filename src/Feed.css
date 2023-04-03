@@ -9,6 +9,7 @@
     padding-bottom: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
+    border: 1px solid lightgrey;
 }
 
 .feed_box {
@@ -46,4 +47,9 @@
 
 .feed_input > form > button {
     display: none;
+}
+
+.feed_inputOptions {
+    display: flex;
+    justify-content: space-evenly;
 }

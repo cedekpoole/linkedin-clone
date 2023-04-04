@@ -10,25 +10,23 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 
 import { db } from "./firebase";
-import { collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "firebase/firestore";
 
 function Feed() {
   const [posts, setPosts] = useState([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    const getPosts = async () => {
+    // const getPosts = async () => {
       const postsCol = collection(db, "posts");
       const q = query(postsCol, orderBy("timestamp", "desc"));
-      const postsSnapshot = await getDocs(q);
-      setPosts(
-        postsSnapshot.docs.map((doc) => ({
+      const postsSnapshot = onSnapshot(q, (snapshot) => {
+        setPosts(snapshot.docs.map((doc) => ({
           id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    };
-    getPosts();
+          data: doc.data()
+        })))
+      });
+      return postsSnapshot;
   }, []);
 
   const sendPost = (e) => {

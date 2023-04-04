@@ -25,10 +25,15 @@
 
 .post_body {
     overflow-wrap: anywhere;
+    margin-bottom: 20px;
 }
 
 .post_buttons {
     display: flex;
     justify-content: space-evenly;
     margin-top: 10px;
+}
+
+ .line {
+    border: 0.2px solid lightgrey;
 }

@@ -1,8 +1,12 @@
 import "./Login.css";
 import { auth } from "./firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useState } from "react";
-import { login } from './features/userSlice'
+import { login } from "./features/userSlice";
 import { useDispatch } from "react-redux";
 
 function Login() {
@@ -10,29 +14,45 @@ function Login() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [profilePic, setProfilePic] = useState("");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const register = async (e) => {
     if (!name) {
-      alert("Please enter your full name!")
+      alert("Please enter your full name!");
     } else {
-        const { user } = await createUserWithEmailAndPassword(auth, email, password)
-        console.log(`User ${user.uid} created`)
-        await updateProfile(user, {
-          displayName: name,
-          photoURL: profilePic
-        })
-        dispatch(login({
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(`User ${user.uid} created`);
+      await updateProfile(user, {
+        displayName: name,
+        photoURL: profilePic,
+      });
+      dispatch(
+        login({
           email: user.email,
           uid: user.uid,
           displayName: name,
-          photoURL: profilePic
-        }))
+          photoURL: profilePic,
+        })
+      );
     }
   };
 
-  const loginToApp = (e) => {
+  const loginToApp = async (e) => {
     e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      dispatch(
+        login({
+          email: userCredential.user.email,
+          uid: userCredential.user.uid,
+          displayName: userCredential.user.displayName,
+          photoURL: userCredential.user.photoURL,
+        })
+      );
+    }).catch((error) => alert(error));
   };
 
   return (
@@ -48,7 +68,12 @@ function Login() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <input type="text" placeholder="Profile pic URL (optional)" value={profilePic} onChange={e => setProfilePic(e.target.value)}/>
+        <input
+          type="text"
+          placeholder="Profile pic URL (optional)"
+          value={profilePic}
+          onChange={(e) => setProfilePic(e.target.value)}
+        />
         <input
           type="email"
           placeholder="Email"

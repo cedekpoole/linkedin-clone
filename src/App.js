@@ -20,7 +20,7 @@ function App() {
           email: user.email,
           uid: user.uid,
           displayName: user.displayName,
-          photoUrl: user.photoURL
+          photoURL: user.photoURL
         }))
         // if user is logged in
       } else {

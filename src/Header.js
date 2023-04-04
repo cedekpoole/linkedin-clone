@@ -6,8 +6,21 @@ import HeaderOptions from "./HeaderOptions";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useDispatch } from "react-redux";
+import { signOut } from 'firebase/auth'
+import { auth } from './firebase'
+import { logout } from './features/userSlice'
+
 
 const Header = () => {
+  const dispatch = useDispatch()
+
+
+  const logoutOfApp = () => {
+    dispatch(logout())
+    signOut(auth)
+  }
+  
   return (
     <div className="header">
       <div className="header_left">
@@ -28,7 +41,8 @@ const Header = () => {
         <HeaderOptions title="Notifications" Icon={NotificationsIcon} />
         <HeaderOptions
           title="Me"
-          avatar="https://images.unsplash.com/photo-1679163903973-2ddc083c8fcc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=419&q=80"
+          avatar={true}
+          onClick={logoutOfApp}
         />
       </div>
     </div>

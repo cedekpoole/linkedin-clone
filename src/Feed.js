@@ -8,35 +8,46 @@ import PanoramaIcon from "@mui/icons-material/Panorama";
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-
 import { db } from "./firebase";
-import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
+import FlipMove from "react-flip-move";
 
 function Feed() {
+  const user = useSelector(selectUser);
   const [posts, setPosts] = useState([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    // const getPosts = async () => {
-      const postsCol = collection(db, "posts");
-      const q = query(postsCol, orderBy("timestamp", "desc"));
-      const postsSnapshot = onSnapshot(q, (snapshot) => {
-        setPosts(snapshot.docs.map((doc) => ({
+    const postsCol = collection(db, "posts");
+    const q = query(postsCol, orderBy("timestamp", "desc"));
+    const postsSnapshot = onSnapshot(q, (snapshot) => {
+      setPosts(
+        snapshot.docs.map((doc) => ({
           id: doc.id,
-          data: doc.data()
-        })))
-      });
-      return postsSnapshot;
+          data: doc.data(),
+        }))
+      );
+    });
+    return postsSnapshot;
   }, []);
 
   const sendPost = (e) => {
     e.preventDefault();
     const addPost = async () => {
       await addDoc(collection(db, "posts"), {
-        name: "Cameron Poole",
-        description: "This is a test",
+        name: user.displayName,
+        description: user.email,
         message: input,
-        photoUrl: "",
+        photoURL: user.photoURL,
         timestamp: serverTimestamp(),
       });
     };
@@ -47,7 +58,9 @@ function Feed() {
     <div className="feed">
       <div className="feed_inputContainer">
         <div className="feed_box">
-          <Avatar className="feed_avatar" />
+          <Avatar className="feed_avatar" src={user.photoURL}>
+            {user.email[0]}
+          </Avatar>
           <div className="feed_input">
             <CreateIcon />
             <form>
@@ -75,15 +88,17 @@ function Feed() {
         </div>
       </div>
       {/* Posts */}
-      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-        <Post
-          key={id}
-          name={name}
-          description={description}
-          message={message}
-          photoUrl={photoUrl}
-        />
-      ))}
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoURL } }) => (
+          <Post
+            key={id}
+            name={name}
+            description={description}
+            message={message}
+            photoURL={photoURL}
+          />
+        ))}
+      </FlipMove>
     </div>
   );
 }
